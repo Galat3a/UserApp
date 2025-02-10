@@ -8,7 +8,6 @@ use App\Http\Controllers\UserManagementController;
 Auth::routes(['verify' => true]);
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
 
 // Rutas protegidas por autenticación
 Route::middleware(['auth'])->group(function () {

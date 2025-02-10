@@ -23,10 +23,6 @@ class UserManagementController extends Controller
 
     public function edit(User $user)
     {
-        // Permitir que el admin edite su propio perfil
-        if ($user->id === 1 && auth()->user()->id !== 1) {
-            return redirect()->back()->with('error', 'No puedes editar al superadmin');
-        }
         return view('users.edit', compact('user'));
     }
 
@@ -88,18 +84,31 @@ class UserManagementController extends Controller
 
     public function update(Request $request, User $user)
     {
-
         if ($user->id === 1 && auth()->user()->id !== 1) {
             return redirect()->back()->with('error', 'No puedes editar al superadmin');
-
         }
- 
-        $request->validate([
+
+        $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'role' => 'required|in:user,admin'
-        ]);
-        $user->update($request->only(['name', 'email', 'role']));
+        ];
+
+        // Validar contraseña solo si se proporciona
+        if ($request->filled('password')) {
+            $rules['password'] = 'required|min:8|confirmed';
+        }
+
+        $request->validate($rules);
+
+        $userData = $request->only(['name', 'email', 'role']);
+        
+        // Actualizar contraseña si se proporciona
+        if ($request->filled('password')) {
+            $userData['password'] = Hash::make($request->password);
+        }
+
+        $user->update($userData);
         return redirect()->route('users.index')->with('status', 'Usuario actualizado correctamente');
     }
 }

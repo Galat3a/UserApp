@@ -1,3 +1,4 @@
+<!-- filepath: /var/www/html/laraveles/UserApp/resources/views/profile.blade.php -->
 @extends('layouts.app')
 
 @section('content')
@@ -13,6 +14,66 @@
                             {{ session('status') }}
                         </div>
                     @endif
+
+                    <!-- Formulario para cambiar el nombre de usuario -->
+                    <form method="POST" action="{{ route('profile.changeUsername') }}">
+                        @csrf
+
+                        <div class="row mb-3">
+                            <label for="new_username" class="col-md-4 col-form-label text-md-end">{{ __('Nuevo Nombre de Usuario') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="new_username" type="text" class="form-control @error('new_username') is-invalid @enderror" name="new_username" required>
+
+                                @error('new_username')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-0">
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
+                                    {{ __('Cambiar Nombre de Usuario') }}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <hr>
+
+                    <!-- Formulario para cambiar el correo electrónico -->
+                    <form method="POST" action="{{ route('profile.changeEmail') }}">
+                        @csrf
+
+                        <div class="row mb-3">
+                            <label for="new_email" class="col-md-4 col-form-label text-md-end">{{ __('Nuevo Correo Electrónico') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="new_email" type="email" class="form-control @error('new_email') is-invalid @enderror" name="new_email" required>
+
+                                @error('new_email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-0">
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
+                                    {{ __('Cambiar Correo Electrónico') }}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <hr>
+
+                    <!-- Formulario para cambiar la contraseña -->
                     <form method="POST" action="{{ route('profile.changePassword') }}">
                         @csrf
 
@@ -56,64 +117,6 @@
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Cambiar Contraseña') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-
-                    <hr>
-
-                    <!-- Formulario para cambiar el correo electrónico -->
-                    <form method="POST" action="{{ route('profile.changeEmail') }}">
-                        @csrf
-
-                        <div class="row mb-3">
-                            <label for="new_email" class="col-md-4 col-form-label text-md-end">{{ __('Nuevo Correo Electrónico') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="new_email" type="email" class="form-control @error('new_email') is-invalid @enderror" name="new_email" required>
-
-                                @error('new_email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Cambiar Correo Electrónico') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-
-                    <hr>
-
-                    <!-- Formulario para cambiar el nombre de usuario -->
-                    <form method="POST" action="{{ route('profile.changeUsername') }}">
-                        @csrf
-
-                        <div class="row mb-3">
-                            <label for="new_username" class="col-md-4 col-form-label text-md-end">{{ __('Nuevo Nombre de Usuario') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="new_username" type="text" class="form-control @error('new_username') is-invalid @enderror" name="new_username" required>
-
-                                @error('new_username')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Cambiar Nombre de Usuario') }}
                                 </button>
                             </div>
                         </div>

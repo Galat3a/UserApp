@@ -14,9 +14,6 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-
-        $this->middleware('auth')->only('verificado');
-        $this->middleware('auth')->except('index');
     }
 
     /**
@@ -26,7 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('index');
+        return view('home');
     }
 
     public function home()
