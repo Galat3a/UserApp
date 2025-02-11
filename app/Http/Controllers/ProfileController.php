@@ -104,4 +104,34 @@ class ProfileController extends Controller
 
         return back()->with('status', 'Rol actualizado correctamente');
     }
+
+    public function update(Request $request)
+    {
+        $user = auth()->user();
+
+        $rules = [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+        ];
+
+        if ($user->role === 'admin' || $user->role === 'superadmin') {
+            $rules['role'] = 'required|in:user,admin';
+        }
+
+        if ($request->filled('password')) {
+            $rules['password'] = 'required|min:8|confirmed';
+        }
+
+        $request->validate($rules);
+
+        $userData = $request->only(['name', 'email', 'role']);
+
+        if ($request->filled('password')) {
+            $userData['password'] = Hash::make($request->password);
+        }
+
+        $user->update($userData);
+
+        return redirect()->route('profile.show')->with('status', 'Perfil actualizado correctamente');
+    }
 }

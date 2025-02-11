@@ -1,4 +1,3 @@
-<!-- filepath: /var/www/html/laraveles/UserApp/resources/views/profile.blade.php -->
 @extends('layouts.app')
 
 @section('content')
@@ -15,75 +14,16 @@
                         </div>
                     @endif
 
-                    <!-- Formulario para cambiar el nombre de usuario -->
-                    <form method="POST" action="{{ route('profile.changeUsername') }}">
+                    <form method="POST" action="{{ route('profile.update') }}">
                         @csrf
-
+                        @method('PUT')
+                        
                         <div class="row mb-3">
-                            <label for="new_username" class="col-md-4 col-form-label text-md-end">{{ __('Nuevo Nombre de Usuario') }}</label>
-
+                            <label class="col-md-4 col-form-label text-md-end">{{ __('Nombre') }}</label>
                             <div class="col-md-6">
-                                <input id="new_username" type="text" class="form-control @error('new_username') is-invalid @enderror" name="new_username" required>
-
-                                @error('new_username')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Cambiar Nombre de Usuario') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-
-                    <hr>
-
-                    <!-- Formulario para cambiar el correo electrónico -->
-                    <form method="POST" action="{{ route('profile.changeEmail') }}">
-                        @csrf
-
-                        <div class="row mb-3">
-                            <label for="new_email" class="col-md-4 col-form-label text-md-end">{{ __('Nuevo Correo Electrónico') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="new_email" type="email" class="form-control @error('new_email') is-invalid @enderror" name="new_email" required>
-
-                                @error('new_email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Cambiar Correo Electrónico') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-
-                    <hr>
-
-                    <!-- Formulario para cambiar la contraseña -->
-                    <form method="POST" action="{{ route('profile.changePassword') }}">
-                        @csrf
-
-                        <div class="row mb-3">
-                            <label for="current_password" class="col-md-4 col-form-label text-md-end">{{ __('Contraseña Actual') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="current_password" type="password" class="form-control @error('current_password') is-invalid @enderror" name="current_password" required>
-
-                                @error('current_password')
+                                <input type="text" class="form-control @error('name') is-invalid @enderror" 
+                                       name="name" value="{{ old('name', auth()->user()->name) }}" required autofocus>
+                                @error('name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -92,12 +32,11 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="new_password" class="col-md-4 col-form-label text-md-end">{{ __('Nueva Contraseña') }}</label>
-
+                            <label class="col-md-4 col-form-label text-md-end">{{ __('Email') }}</label>
                             <div class="col-md-6">
-                                <input id="new_password" type="password" class="form-control @error('new_password') is-invalid @enderror" name="new_password" required>
-
-                                @error('new_password')
+                                <input type="email" class="form-control @error('email') is-invalid @enderror" 
+                                       name="email" value="{{ old('email', auth()->user()->email) }}" required>
+                                @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -106,57 +45,51 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="new_password_confirmation" class="col-md-4 col-form-label text-md-end">{{ __('Confirmar Nueva Contraseña') }}</label>
-
+                            <label class="col-md-4 col-form-label text-md-end">{{ __('Nueva Contraseña') }}</label>
                             <div class="col-md-6">
-                                <input id="new_password_confirmation" type="password" class="form-control" name="new_password_confirmation" required>
+                                <input type="password" class="form-control @error('password') is-invalid @enderror" 
+                                       name="password">
+                                <small class="form-text text-muted">Dejar en blanco para mantener la contraseña actual</small>
+                                @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
                         </div>
 
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Cambiar Contraseña') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-
-                    <hr>
-                    
-                    @if(auth()->user()->role === 'admin' || auth()->user()->role === 'superadmin')
-                    <!-- Formulario para cambiar el rol -->
-                    <form method="POST" action="{{ route('profile.changeRole') }}">
-                        @csrf
                         <div class="row mb-3">
-                            <label for="new_role" class="col-md-4 col-form-label text-md-end">{{ __('Cambiar Rol') }}</label>
+                            <label class="col-md-4 col-form-label text-md-end">{{ __('Confirmar Contraseña') }}</label>
                             <div class="col-md-6">
-                                <select name="new_role" class="form-control @error('new_role') is-invalid @enderror" required>
-                                    @if(auth()->user()->role === 'superadmin')
-                                        <option value="admin">Admin</option>
-                                        <option value="user">User</option>
-                                    @else
-                                        <option value="user">User</option>
-                                    @endif
+                                <input type="password" class="form-control" name="password_confirmation">
+                            </div>
+                        </div>
+
+                        @if(auth()->user()->role === 'admin' || auth()->user()->role === 'superadmin')
+                        <div class="row mb-3">
+                            <label class="col-md-4 col-form-label text-md-end">{{ __('Rol') }}</label>
+                            <div class="col-md-6">
+                                <select name="role" class="form-control @error('role') is-invalid @enderror">
+                                    <option value="user" {{ auth()->user()->role == 'user' ? 'selected' : '' }}>Usuario</option>
+                                    <option value="admin" {{ auth()->user()->role == 'admin' ? 'selected' : '' }}>Administrador</option>
                                 </select>
-
-                                @error('new_role')
+                                @error('role')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
                         </div>
-
+                        @endif
+                        
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Cambiar Rol') }}
+                                    {{ __('Actualizar Perfil') }}
                                 </button>
                             </div>
                         </div>
                     </form>
-                    @endif
 
                 </div>
             </div>

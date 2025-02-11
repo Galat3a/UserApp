@@ -13,6 +13,7 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'home'])->name('hom
 Route::middleware(['auth'])->group(function () {
     // Cambiar 'profile.edit' a 'profile.show' para mantener consistencia
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/password', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
     Route::post('/profile/email', [ProfileController::class, 'changeEmail'])->name('profile.changeEmail');
     Route::post('/profile/username', [ProfileController::class, 'changeUsername'])->name('profile.changeUsername');
